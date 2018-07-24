@@ -6,7 +6,7 @@ body {
   padding: 0;
 }
 #main {
-  width: 50%;
+  width: 80%;
   margin-top: 2px;
   margin-left: auto;
   margin-right: auto;
@@ -37,11 +37,10 @@ body {
   padding: 5px 0;
 }
 #form input#submit {
-  margin-right: 0;
-  font-size: 110%;
-  float: right;
-  padding: 5px;
-  margin-bottom: 5px;
+font-size: 110%;
+    float: right;
+    color: #e8dbdb;
+    background: #263238;
 }
 #form input.pointer {
   cursor: pointer;

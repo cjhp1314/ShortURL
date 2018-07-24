@@ -5,6 +5,7 @@ import json
 import re
 import web
 from libs.qrcode import QRCode, ErrorCorrectLevel
+from libs.str_encrypt import get_md5_value
 import settings
 import models
 
@@ -13,12 +14,14 @@ render = web.template.render(settings.TEMPLATE_DIR,
                              base=settings.BASE_TEMPLATE)
 app = web.application(settings.URLS, globals())
 db = models.DB(settings.DATABASES)
+domain = 'http://opurl.cn'
 
 
 class Index(object):
     """首页"""
     def GET(self):
-        return render.index()
+        urls = db.get_last_data()
+        return render.index(urls,domain)
 
 
 class Shorten(object):
@@ -86,7 +89,7 @@ class Shorten(object):
         return html
 
     def POST(self, get_json=False):
-        url = web.input(url='').url.strip()
+        url = web.data().replace('url=','')
         if not url:
             return web.badrequest()
 
@@ -95,12 +98,13 @@ class Shorten(object):
             print repr(url)
 
         # 判断是否已存在相应的数据
-        exists = self.db.exist_expand(url)
+        url_md5 = get_md5_value(url)
+        exists = self.db.exist_expand(url_md5)
         if exists:
             shorten = exists.shorten
         else:
-            shorten = self.db.add_url(url).shorten
-        shorten = web.ctx.homedomain + '/' + shorten
+            shorten = self.db.add_url(url,url_md5).shorten
+        shorten = domain + '/' + shorten
 
         if get_json:
             # 返回 json 格式的数据
@@ -148,7 +152,7 @@ class Expand(object):
             if debug:
                 print repr(expand)
             if expand:
-                shorten = web.ctx.homedomain + '/' + shorten
+                shorten = domain + '/' + shorten
                 return json.dumps({'shorten': shorten, 'expand': expand})
             else:
                 return json.dumps({'shorten': '', 'expand': ''})

@@ -1,14 +1,58 @@
+$def with (urls, domain)
 $var title: URL Shortener
+
+<style type="text/css">
+table.gridtable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #666666;
+    border-collapse: collapse;
+    width: 100%;
+}
+table.gridtable th {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #dedede;
+}
+table.gridtable td {
+    border-width: 1px;
+    padding: 8px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #ffffff;
+}
+</style>
+
 
 <div id="main">
   <div id="form">
     <form action="/shorten" method="post">
-      <input id="url" type="text" name="url" autofocus="autofocus" required="required" placeholder="Paste your long URL here">
-      <input id="submit" type="submit" value="Shorten" class="pointer">
+      <input id="url" type="text" name="url" autofocus="autofocus" required="required" placeholder="输入网址">
+      <p></p>
+      <input id="submit" type="submit" value="生成短地址" class="pointer">
       <div id="msg" class="hidden"></div>
     </form>
   </div>
   <div id="result" style="visibility: hidden;">
     <div><input type="url" name="shorten-url" value="" id="shorten"></div>
   </div>
+  </hr>
+  <h4>最近100条生成记录</h4>
+  <table id="table" class="gridtable" >
+      <tr>
+          <td>短地址</td>
+          <td>原始地址</td>
+          <td>创建时间</td>
+      </tr>
+  $for u in urls:
+      <tr>
+          <td><a href="$domain/$u.shorten" target="_blank">$domain/$u.shorten</a></td>
+          <td>$u.expand</td>
+          <td>$u.createTime</td>
+      </tr>
+  </table>
 </div>

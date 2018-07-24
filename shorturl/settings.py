@@ -21,9 +21,9 @@ URLS = (
 # 数据库配置
 DATABASES = {
     'dbn': 'mysql',
-    'db': 'shorturl',
-    'user': 'py',
-    'pw': 'py_passwd',
-    'host': 'localhost',
+    'db': 'shortUrl',
+    'user': 'shortUrl',
+    'pw': 'shortUrl',
+    'host': '127.0.0.1',
     'port': 3306,
 }

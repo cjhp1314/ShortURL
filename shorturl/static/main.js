@@ -124,6 +124,13 @@ function displayResult(request) {
     document.getElementById("shorten").focus();
     document.getElementById("shorten").select();
     document.getElementById("submit").className = "pointer";
+    var x=document.getElementById('table').insertRow(1)
+    var y=x.insertCell(0)
+    var z=x.insertCell(1)
+    var url = document.getElementById("url").value;
+    var tr = '<a href="'+shorten+'" target="_blank">'+shorten+'</a>'
+    y.innerHTML=tr;
+    z.innerHTML= url;
   }
 }
 // 检测 XMLHttpRequest 对象是否可用
@@ -163,6 +170,7 @@ function submitEvent() {
   document.getElementById("submit").onclick = function () {
     if (validForm()) {
       postFormData();
+
     }
     return false;
   }
