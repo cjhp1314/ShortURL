@@ -1,4 +1,6 @@
 // 用于更新 window.onload 事件
+//
+check='';
 function addLoadEvent(func) {
   var oldonload = window.onload;
   if (typeof window.onload != 'function') {
@@ -124,13 +126,17 @@ function displayResult(request) {
     document.getElementById("shorten").focus();
     document.getElementById("shorten").select();
     document.getElementById("submit").className = "pointer";
+    if(responseJson.exists_status==1){
     var x=document.getElementById('table').insertRow(1)
     var y=x.insertCell(0)
     var z=x.insertCell(1)
+    var u=x.insertCell(2)
     var url = document.getElementById("url").value;
     var tr = '<a href="'+shorten+'" target="_blank">'+shorten+'</a>'
     y.innerHTML=tr;
     z.innerHTML= url;
+    u.innerHTML= responseJson.createTime;
+    }
   }
 }
 // 检测 XMLHttpRequest 对象是否可用

@@ -4,6 +4,7 @@
 import json
 import re
 import web
+from datetime import datetime
 from libs.qrcode import QRCode, ErrorCorrectLevel
 from libs.str_encrypt import get_md5_value
 import settings
@@ -100,16 +101,19 @@ class Shorten(object):
         # 判断是否已存在相应的数据
         url_md5 = get_md5_value(url)
         exists = self.db.exist_expand(url_md5)
+        createTime = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         if exists:
+            exists_status = 0
             shorten = exists.shorten
         else:
             shorten = self.db.add_url(url,url_md5).shorten
+            exists_status = 1
         shorten = domain + '/' + shorten
 
         if get_json:
             # 返回 json 格式的数据
             web.header('Content-Type', 'application/json')
-            return json.dumps({'shorten': shorten, 'expand': url})
+            return json.dumps({'shorten': shorten, 'expand': url, 'exists_status': exists_status, 'createTime': createTime})
         else:
             shortens = web.storage({'url': shorten,
                                     'qr_table': self.qrcode_table(shorten),
